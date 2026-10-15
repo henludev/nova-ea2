@@ -1,7 +1,7 @@
 # Nova Servicios TI base EA2
 Continuación del portal de semana 5. R1-R4 están implementados. PR #1, Preview y
-producción están registrados en docs/pruebas.md; P10 conserva pendiente la comprobación
-manual completa de teclado y zoom real.
+producción están registrados en docs/pruebas.md. P10 verificó Tab/Escape y el viewport
+equivalente a 200%; falta aplicar zoom real del navegador.
 Abre la carpeta completa en VS Code. Requiere Node.js 22 o posterior.
 Ejecuta `npm run dev` y abre http://127.0.0.1:5500. No abras index.html por file://.
 No se necesitan paquetes externos ni npm install. Ctrl+C detiene el servidor.
