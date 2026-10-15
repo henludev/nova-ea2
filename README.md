@@ -1,35 +1,50 @@
-# Nova Servicios TI base EA2
-Continuación del portal de semana 5. R1-R4 están implementados. PR #1, Preview y
-producción están registrados en docs/pruebas.md. P10 verificó varios anchos, Tab/Escape
-y zoom real del navegador al 200 %.
-Abre la carpeta completa en VS Code. Requiere Node.js 22 o posterior.
-Ejecuta `npm run dev` y abre http://127.0.0.1:5500. No abras index.html por file://.
-No se necesitan paquetes externos ni npm install. Ctrl+C detiene el servidor.
-`npm run check:project` revisa sintaxis y JSON; `npm test` revisa el servidor heredado.
-Estos checks pasan aunque los retos sigan pendientes. La corrección funcional es independiente.
-Prueba manualmente docs/pruebas.md después de implementar.
+# Nova Servicios TI EA2
 
-Base recibida: portal Nova EA2 de semana 5, incluido su HTML, catálogo JSON, estilos,
-interacciones y controles de EA2.
-Cambios propios: filtro exacto de servicios, validación de urgencia, cambios de estado
-con auditoría en memoria, medición local con consentimiento y animación accesible.
-Herramientas y uso de IA: GitHub Copilot ayudó a implementar y revisar estos cambios;
-el autor debe verificar, probar y poder explicar el código entregado.
-Archivos principales: public/assets/js/ea2-logica.js y public/assets/css/ea2.css.
-Se conserva la navegación, los controles existentes y los datos solo en memoria.
-El modelo conceptual previo se resume en docs/modelo-continuidad.md; no se requiere base de datos real.
-No copies respuestas de la versión docente. Identifica autor, base, cambios propios y apoyo de IA.
+## Base recibida
+Portal de práctica de la semana 5: interfaz HTML/CSS, navegación, catálogo JSON, formulario, ayuda, tabla de solicitudes y controles/listeners EA2 provistos. La base no incluía la lógica de los retos R1-R4 ni la animación de confirmación.
 
-Despliegue Vercel: repositorio raíz que contiene package.json; Framework Other; sin comando
-de build; Output Directory public (vercel.json incluido). No combines Root Directory public
-con Output Directory public. Preview se verifica antes del merge. Main sirve a producción.
-El workflow incluye checks básicos; para bloquear merge hay que configurar checks requeridos
-en protección de rama o ruleset. El workflow solo no impone esa restricción.
+## Cambios propios
+- R1: filtro exacto por categoría que devuelve una lista nueva y conserva el catálogo fuente.
+- R2: justificación mínima de 15 caracteres útiles para prioridad alta; el formulario muestra error y lleva el foco al campo.
+- R3: cambios de estado permitidos al rol demostrativo técnico, con auditoría en memoria y rechazo de estados/solicitudes inválidos.
+- R4: eventos locales solo con aceptación, con nombres permitidos y únicamente las claves event, service_id y categoria.
+- Animación breve de cambio de estado, desactivada con `prefers-reduced-motion`.
+- Registro de pruebas, evidencia de navegador y configuración de GitHub/Vercel.
 
-Entrega: ZIP sin .git/node_modules/.env, repo, PR, Preview, producción, SHA de cada despliegue.
-Plantilla: autor ___; base recibida ___; cambios ___; herramientas y uso IA ___;
-repo ___; PR ___; Preview/SHA ___; producción/SHA ___; incidencias externas ___.
+## Ejecución local
+Requiere Node.js 22 o posterior. No necesita instalar paquetes.
 
-Continuidad hasta la semana 7: corregir observaciones, practicar revisión de HTML/CSS/JS,
-modelo, integración, SEO y flujo de publicación. El EF solicitado es TEÓRICO; este proyecto
-es apoyo de aprendizaje y no añade un entregable práctico calificado al EF.
+```powershell
+npm run dev
+```
+
+Abre http://127.0.0.1:5500. No abras `public/index.html` mediante `file://`. Detén el servidor con Ctrl+C.
+
+Verificaciones locales:
+
+```powershell
+npm run check:project
+npm test
+```
+
+Solicitudes, auditoría, eventos y preferencia solo viven en memoria y desaparecen al recargar. El selector de roles es demostrativo; no hay autenticación, backend ni envío a proveedores analíticos.
+
+## Pruebas y capturas
+El detalle de los 12 casos y sus resultados está en [docs/pruebas.md](docs/pruebas.md).
+
+- [Catálogo y filtro por categoría](docs/capturas/p01-catalogo-red.png)
+- [Error de urgencia y foco](docs/capturas/p03-urgencia-error.png)
+- [Auditoría de cambio de estado](docs/capturas/p06-auditoria.png)
+- [Preferencia y eventos locales](docs/capturas/p08-consentimiento.png)
+
+## Apoyo de IA
+Se utilizó como apoyo durante la implementación y la revisión de la documentación. Los resultados verificados están en [docs/pruebas.md](docs/pruebas.md).
+
+## Repositorio y despliegue
+- Repositorio: [henludev/nova-ea2](https://github.com/henludev/nova-ea2)
+- PR fusionado: [#1](https://github.com/henludev/nova-ea2/pull/1)
+- Merge a `main`: `e66ed40f64a4d5b8a12b84d05713306c3720e2b3`
+- Preview de `release/ea2`: [nova-ea2-git-release-ea2-hramosh-6342.vercel.app](https://nova-ea2-git-release-ea2-hramosh-6342.vercel.app), SHA `a6d7d7b476764807d3b2c359c88c19ccdbdc2310`
+- Producción: [nova-ea2.vercel.app](https://nova-ea2.vercel.app), SHA `3d0fa690ddbe7236959f3528a956d829bba9b312`
+
+Vercel usa Framework Other, raíz `./`, comando de build vacío y directorio de salida `public`. Los checks de GitHub Actions pasaron. No se compró dominio ni se configuró Supabase.
