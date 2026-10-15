@@ -1,17 +1,58 @@
 // Completa las funciones conservando estas firmas. Requisitos en docs/retos.md.
 export function filtrarServicios(lista, categoria) {
-  // TODO R1: devolver una nueva lista; "Todas" incluye todos los servicios.
-  return [...lista];
+  return categoria === 'Todas'
+    ? [...lista]
+    : lista.filter((servicio) => servicio.categoria === categoria);
 }
 export function validarUrgencia(prioridad, motivo) {
-  // TODO R2: devolver "" si cumple; mensaje si alta tiene menos de 15 caracteres útiles.
-  return prioridad === 'alta' ? 'R2 pendiente: implementa la justificación de prioridad alta.' : '';
+  if (prioridad !== 'alta') return '';
+  const caracteresUtiles = typeof motivo === 'string' ? motivo.trim().length : 0;
+  return caracteresUtiles >= 15
+    ? ''
+    : 'Justifica la prioridad alta con al menos 15 caracteres útiles.';
 }
 export function cambiarEstado(solicitudes, id, nuevoEstado, actor, auditoria) {
-  // TODO R3: técnico demo; estados válidos; rechazar sin cambios; auditar una vez.
-  return false;
+  const estados = ['Pendiente', 'En proceso', 'Resuelto', 'Cerrado/Cancelado'];
+  if (
+    !Array.isArray(solicitudes) ||
+    !Array.isArray(auditoria) ||
+    actor?.rol !== 'tecnico' ||
+    !estados.includes(nuevoEstado)
+  ) return false;
+
+  const solicitud = solicitudes.find((elemento) => elemento.id === id);
+  if (!solicitud || !estados.includes(solicitud.estado) || solicitud.estado === nuevoEstado) return false;
+
+  const anterior = solicitud.estado;
+  solicitud.estado = nuevoEstado;
+  auditoria.push({
+    id: auditoria.length + 1,
+    actor_id: actor.id,
+    solicitud_id: solicitud.id,
+    accion: 'CAMBIO_ESTADO',
+    anterior,
+    nuevo: nuevoEstado,
+    fecha: new Date().toISOString(),
+  });
+  return true;
 }
 export function registrarEvento(consentimiento, nombre, servicio, eventos) {
-  // TODO R4: registrar solo con aceptación, evento permitido y servicio válido.
-  return false;
+  const eventosPermitidos = ['select_service', 'submit_request'];
+  const categoriasPermitidas = ['Accesos', 'Hardware', 'Red', 'Software'];
+  if (
+    consentimiento !== 'aceptado' ||
+    !eventosPermitidos.includes(nombre) ||
+    !Array.isArray(eventos) ||
+    !servicio ||
+    !Number.isSafeInteger(servicio.id) ||
+    servicio.id <= 0 ||
+    !categoriasPermitidas.includes(servicio.categoria)
+  ) return false;
+
+  eventos.push({
+    event: nombre,
+    service_id: String(servicio.id),
+    categoria: servicio.categoria,
+  });
+  return true;
 }
