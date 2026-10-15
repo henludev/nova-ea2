@@ -2,5 +2,11 @@
 .ea2-controles > .campo { min-width: 0; }
 #lista-auditoria { overflow-wrap: anywhere; }
 @media (min-width: 768px) { .ea2-controles { grid-template-columns: repeat(3, minmax(0,1fr)); } }
-/* TODO R3: añade una animación funcional a .ea2-actualizada y respeta reduced motion.
-    El mensaje debe seguir visible si se reduce el movimiento. */
+.ea2-actualizada { animation: ea2-confirmacion 500ms ease-out; }
+@keyframes ea2-confirmacion {
+    from { background-color: #d8f3e5; }
+    to { background-color: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ea2-actualizada { animation: none; }
+}
